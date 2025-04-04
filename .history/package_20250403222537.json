@@ -1,6 +1,6 @@
 {
   "name": "@th3w1zard1/mcp-panda3d",
-  "version": "0.1.3",
+  "version": "0.1.2",
   "description": "panda3d mcp tools and utilities for Claude and other LLM AI models",
   "private": false,
   "type": "module",
