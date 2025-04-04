@@ -10,16 +10,15 @@
     "build"
   ],
   "scripts": {
-    "build": "npm install && tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
-    "check-format": "prettier --check \"src/**/*.ts\"",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "inspector": "npx @modelcontextprotocol/inspector build/index.js",
-    "lint:fix": "eslint src/ --fix",
-    "lint": "eslint src/",
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
     "prepare": "npm run build",
-    "release": "npm run build && npm publish --access public",
-    "update": "npm install && npm run build",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "inspector": "npx @modelcontextprotocol/inspector build/index.js",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "check-format": "prettier --check \"src/**/*.ts\"",
+    "release": "npm run build && npm publish --access public"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "0.6.0",
@@ -37,22 +36,5 @@
   },
   "engines": {
     "node": ">=14.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/th3w1zard1/mcp-panda3d.git"
-  },
-  "keywords": [
-    "panda3d",
-    "mcp",
-    "3d",
-    "design",
-    "docs"
-  ],
-  "author": "th3w1zard1",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/th3w1zard1/mcp-panda3d/issues"
-  },
-  "homepage": "https://github.com/th3w1zard1/mcp-panda3d#readme"
+  }
 }

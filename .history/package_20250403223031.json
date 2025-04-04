@@ -48,11 +48,5 @@
     "3d",
     "design",
     "docs"
-  ],
-  "author": "th3w1zard1",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/th3w1zard1/mcp-panda3d/issues"
-  },
-  "homepage": "https://github.com/th3w1zard1/mcp-panda3d#readme"
+  }
 }

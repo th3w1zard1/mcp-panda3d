@@ -45,14 +45,15 @@
   "keywords": [
     "panda3d",
     "mcp",
-    "3d",
-    "design",
-    "docs"
-  ],
-  "author": "th3w1zard1",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/th3w1zard1/mcp-panda3d/issues"
-  },
-  "homepage": "https://github.com/th3w1zard1/mcp-panda3d#readme"
-}
+    "mcp-panda3d",
+    "mcp-panda3d-tools",
+    "mcp-panda3d-utilities",
+    "mcp-panda3d-utils",
+    "mcp-panda3d-utils-tools",
+    "mcp-panda3d-utils-utilities",
+    "mcp-panda3d-utils-utils",
+    "mcp-panda3d-utils-tools-utilities",
+    "mcp-panda3d-utils-tools-utils",
+    "mcp-panda3d-utils-tools-utilities",
+    "mcp-panda3d-utils-tools-utils"
+  }

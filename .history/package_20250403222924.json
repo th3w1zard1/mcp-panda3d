@@ -18,7 +18,6 @@
     "lint": "eslint src/",
     "prepare": "npm run build",
     "release": "npm run build && npm publish --access public",
-    "update": "npm install && npm run build",
     "watch": "tsc --watch"
   },
   "dependencies": {
@@ -37,22 +36,5 @@
   },
   "engines": {
     "node": ">=14.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/th3w1zard1/mcp-panda3d.git"
-  },
-  "keywords": [
-    "panda3d",
-    "mcp",
-    "3d",
-    "design",
-    "docs"
-  ],
-  "author": "th3w1zard1",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/th3w1zard1/mcp-panda3d/issues"
-  },
-  "homepage": "https://github.com/th3w1zard1/mcp-panda3d#readme"
+  }
 }
