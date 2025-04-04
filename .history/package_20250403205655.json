@@ -1,0 +1,38 @@
+{
+  "name": "panda3d-docs-server",
+  "version": "0.1.0",
+  "description": "panda3d docs tool for npm",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "panda3d-docs-server": "./build/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "prepare": "npm run build",
+    "watch": "tsc --watch",
+    "inspector": "npx @modelcontextprotocol/inspector build/index.js",
+    "lint": "eslint --ext .ts src/",
+    "lint:fix": "eslint --ext .ts src/ --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "check-format": "prettier --check \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "0.6.0",
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0",
+    "puppeteer": "^23.10.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
+  }
+}
