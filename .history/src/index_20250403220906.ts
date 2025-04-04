@@ -18,35 +18,8 @@ const BANNER = `
 ╚═════════════════════════════════════════════╝
 `;
 
-const USAGE_MESSAGE = `
-This is an MCP tool server for Panda3D documentation.
-It should be used as a tool in an MCP client configuration.
-
-Usage in Claude Opus:
-{
-  "panda3d-docs": {
-    "command": "npx",
-    "args": [
-      "-y",
-      "git+https://github.com/th3w1zard1/mcp-panda3d.git"
-    ],
-    "env": {},
-    "timeout": 60,
-    "transportType": "stdio"
-  }
-}
-
-If you're seeing this message, the server is running correctly but isn't
-connected to an MCP client. The server will wait for MCP protocol messages.
-
-Press Ctrl+C to exit.
-`;
-
 const BASE_URL = "https://docs.panda3d.org";
-const SERVER_VERSION = "0.1.2";
-
-// Determine if this is being run directly (not as a child process)
-const isRunningStandalone = process.stdin.isTTY && process.stdout.isTTY;
+const SERVER_VERSION = "0.1.1";
 
 interface Panda3DDocsArgs {
   readonly query: string;
@@ -397,32 +370,14 @@ class Panda3DDocsServer {
 
     const uptime = ((Date.now() - this.startTime) / 1000).toFixed(2);
     this.logInfo(`Server ready! Started in ${uptime}s`);
-
-    if (isRunningStandalone) {
-      // If running in a TTY, this is likely an interactive session where the user
-      // is running the server directly and not through an MCP client
-      this.logInfo("Detected standalone mode (running in terminal)");
-      console.log(USAGE_MESSAGE);
-    }
-
-    this.logInfo("Waiting for MCP requests...");
+    this.logInfo("Waiting for requests...");
   }
 }
 
-/**
- * Main function to handle command line arguments and run the server
- */
-const main = async (): Promise<void> => {
-  try {
-    const server = new Panda3DDocsServer();
-    await server.run();
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    // eslint-disable-next-line no-console
-    console.error(`[${new Date().toISOString()}] [FATAL] Server failed to start: ${errorMessage}`);
-    process.exit(1);
-  }
-};
-
-// Run the server
-main();
+const server = new Panda3DDocsServer();
+server.run().catch((error: unknown) => {
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  // eslint-disable-next-line no-console
+  console.error(`[${new Date().toISOString()}] [FATAL] Server failed to start: ${errorMessage}`);
+  process.exit(1);
+});

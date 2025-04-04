@@ -18,35 +18,8 @@ const BANNER = `
 ╚═════════════════════════════════════════════╝
 `;
 
-const USAGE_MESSAGE = `
-This is an MCP tool server for Panda3D documentation.
-It should be used as a tool in an MCP client configuration.
-
-Usage in Claude Opus:
-{
-  "panda3d-docs": {
-    "command": "npx",
-    "args": [
-      "-y",
-      "git+https://github.com/th3w1zard1/mcp-panda3d.git"
-    ],
-    "env": {},
-    "timeout": 60,
-    "transportType": "stdio"
-  }
-}
-
-If you're seeing this message, the server is running correctly but isn't
-connected to an MCP client. The server will wait for MCP protocol messages.
-
-Press Ctrl+C to exit.
-`;
-
 const BASE_URL = "https://docs.panda3d.org";
-const SERVER_VERSION = "0.1.2";
-
-// Determine if this is being run directly (not as a child process)
-const isRunningStandalone = process.stdin.isTTY && process.stdout.isTTY;
+const SERVER_VERSION = "0.1.1";
 
 interface Panda3DDocsArgs {
   readonly query: string;
@@ -54,11 +27,26 @@ interface Panda3DDocsArgs {
   readonly search_contents?: boolean;
 }
 
+interface SearchResult {
+  readonly title: string;
+  readonly url: string;
+  readonly description: string;
+}
+
+class DocsError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "DocsError";
+  }
+}
+
 /**
  * Type guard for Panda3DDocsArgs
  */
 const isValidDocsArgs = (args: unknown): args is Panda3DDocsArgs =>
-  typeof args === "object" && args !== null && typeof (args as Panda3DDocsArgs).query === "string";
+  typeof args === "object" &&
+  args !== null &&
+  typeof (args as Panda3DDocsArgs).query === "string";
 
 class Panda3DDocsServer {
   private readonly server: Server;
@@ -168,7 +156,10 @@ class Panda3DDocsServer {
   /**
    * Search Panda3D documentation and return formatted results
    */
-  private async searchDocs(query: string, options: Panda3DDocsArgs): Promise<string> {
+  private async searchDocs(
+    query: string,
+    options: Panda3DDocsArgs
+  ): Promise<string> {
     this.logInfo(`Searching Panda3D docs for: "${query}"`);
     this.debugLog = []; // Clear debug log
     const browser = await this.initBrowser();
@@ -185,15 +176,16 @@ class Panda3DDocsServer {
         });
 
       this.log(`Searching URL: ${searchUrl}`);
-      this.log(
-        `Options: check_keywords=${options.check_keywords !== false}, search_contents=${!!options.search_contents}`
-      );
+      this.log(`Options: check_keywords=${options.check_keywords !== false}, search_contents=${!!options.search_contents}`);
       await page.goto(searchUrl, { waitUntil: "networkidle0" });
 
       // Get search results
       this.log("Extracting search results...");
       const results = await page.evaluate(() => {
-        const items = Array.from(document.querySelectorAll(".search li")).slice(0, 10);
+        const items = Array.from(document.querySelectorAll(".search li")).slice(
+          0,
+          10
+        );
         return items.map((item) => {
           const link = item.querySelector("a");
           return {
@@ -265,7 +257,7 @@ class Panda3DDocsServer {
 
         // Basic cleanup of whitespace and normalize line endings
         const cleanContent = content
-          .replace(/\r\n/g, "\n") // Normalize line endings
+          .replace(/\r\n/g, "\n")  // Normalize line endings
           .split("\n")
           .map((line) => line.trim())
           .filter((line) => line.length > 0)
@@ -334,17 +326,20 @@ class Panda3DDocsServer {
         tools: [
           {
             name: "get_docs",
-            description: "Get Panda3D documentation for a class, function, or module",
+            description:
+              "Get Panda3D documentation for a class, function, or module",
             inputSchema: {
               type: "object",
               properties: {
                 query: {
                   type: "string",
-                  description: 'Search query (e.g. "NodePath", "ShowBase", "editor")',
+                  description:
+                    'Search query (e.g. "NodePath", "ShowBase", "editor")',
                 },
                 check_keywords: {
                   type: "boolean",
-                  description: "Search in module names and titles (default: true)",
+                  description:
+                    "Search in module names and titles (default: true)",
                 },
                 search_contents: {
                   type: "boolean",
@@ -363,16 +358,25 @@ class Panda3DDocsServer {
 
       if (request.params.name !== "get_docs") {
         this.logError(`Unknown tool requested: ${request.params.name}`);
-        throw new McpError(ErrorCode.MethodNotFound, `Unknown tool: ${request.params.name}`);
+        throw new McpError(
+          ErrorCode.MethodNotFound,
+          `Unknown tool: ${request.params.name}`
+        );
       }
 
       if (!isValidDocsArgs(request.params.arguments)) {
         this.logError("Invalid arguments provided");
-        throw new McpError(ErrorCode.InvalidParams, "Invalid documentation arguments");
+        throw new McpError(
+          ErrorCode.InvalidParams,
+          "Invalid documentation arguments"
+        );
       }
 
       this.logInfo(`Processing get_docs request with query: "${request.params.arguments.query}"`);
-      const docs = await this.searchDocs(request.params.arguments.query, request.params.arguments);
+      const docs = await this.searchDocs(
+        request.params.arguments.query,
+        request.params.arguments
+      );
 
       this.logInfo("Returning search results");
       return {
@@ -397,32 +401,16 @@ class Panda3DDocsServer {
 
     const uptime = ((Date.now() - this.startTime) / 1000).toFixed(2);
     this.logInfo(`Server ready! Started in ${uptime}s`);
-
-    if (isRunningStandalone) {
-      // If running in a TTY, this is likely an interactive session where the user
-      // is running the server directly and not through an MCP client
-      this.logInfo("Detected standalone mode (running in terminal)");
-      console.log(USAGE_MESSAGE);
-    }
-
-    this.logInfo("Waiting for MCP requests...");
+    this.logInfo("Waiting for requests...");
   }
 }
 
-/**
- * Main function to handle command line arguments and run the server
- */
-const main = async (): Promise<void> => {
-  try {
-    const server = new Panda3DDocsServer();
-    await server.run();
-  } catch (error) {
+const server = new Panda3DDocsServer();
+server
+  .run()
+  .catch((error: unknown) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     // eslint-disable-next-line no-console
     console.error(`[${new Date().toISOString()}] [FATAL] Server failed to start: ${errorMessage}`);
     process.exit(1);
-  }
-};
-
-// Run the server
-main();
+  });

@@ -1,11 +1,12 @@
 {
   "name": "mcp-panda3d",
-  "version": "0.1.2",
+  "version": "0.1.1",
   "description": "panda3d mcp tools and utilities for Claude and other LLM AI models",
-  "private": false,
+  "private": true,
   "type": "module",
-  "main": "./build/index.js",
-  "bin": "./build/index.js",
+  "bin": {
+    "mcp-panda3d": "./build/index.js"
+  },
   "files": [
     "build"
   ],
@@ -21,19 +22,16 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "0.6.0",
-    "axios": "^1.8.4",
+    "axios": "^1.7.9",
     "cheerio": "^1.0.0",
-    "puppeteer": "^23.11.1"
+    "puppeteer": "^23.10.4"
   },
   "devDependencies": {
-    "@types/node": "^20.17.30",
-    "eslint": "^8.57.1",
+    "@types/node": "^20.11.24",
+    "eslint": "^9.23.0",
     "eslint-config-prettier": "^9.1.0",
-    "prettier": "^3.5.3",
-    "typescript": "^5.8.2",
-    "typescript-eslint": "^7.18.0"
-  },
-  "engines": {
-    "node": ">=14.0.0"
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^7.3.1"
   }
 }
