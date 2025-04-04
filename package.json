@@ -1,11 +1,11 @@
 {
-  "name": "panda3d-docs-server",
-  "version": "0.1.0",
-  "description": "panda3d docs tool for npm",
+  "name": "mcp-panda3d",
+  "version": "0.1.1",
+  "description": "panda3d mcp tools and utilities for Claude and other LLM AI models",
   "private": true,
   "type": "module",
   "bin": {
-    "panda3d-docs-server": "./build/index.js"
+    "mcp-panda3d": "./build/index.js"
   },
   "files": [
     "build"
