@@ -1,0 +1,18 @@
+Business Source License 1.1 (BSL 1.1)
+https://mariadb.com/bsl11/
+
+Licensor: Boden Crouch (boden.crouch@gmail.com);
+Licensed Work: mcp-panda3d
+Change Date: 2029-06-23;
+Change License: Apache 2.0;
+
+Additional Use Grant:
+
+The Licensed Work may be used at no cost for:
+- Personal, educational, or non-commercial use; (For clarity, "non-commercial use" means use not intended for profit or revenue generation;)
+- Self-hosted deployments that do not generate direct or indirect revenue; (For clarity, "self-hosted deployment" means running the Licensed Work on hardware or infrastructure controlled by the Licensee;)
+- Use by nonprofits or individuals who do not offer the software or services for a fee.
+
+Commercial Use—defined as any use intended for, or in connection with, a for-profit enterprise; or generating revenue directly or indirectly (including any form of monetary consideration or commercial benefit)—requires a separate commercial license from the Licensor. Any use not explicitly permitted above is considered Commercial Use.
+
+For commercial licensing inquiries, contact: boden.crouch@gmail.com;
